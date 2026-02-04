@@ -11,11 +11,14 @@ public class Category {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name;
-
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    private String name; // Deve chiamarsi esattamente così
 
     public Category() {}
-    // Aggiungi Getter e Setter per id e name
+
+    // FONDAMENTALE: Getter e Setter manuali
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 }

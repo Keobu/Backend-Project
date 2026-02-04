@@ -1,21 +1,16 @@
-package Backend_project.ecommerce.entities;
+package Backend_project.ecommerce.DTO;
 
-import jakarta.persistence.*;
-
-@Entity
-public class Vendor extends User {
+public class VendorDTO extends UserDTO {
     private String vatNumber;
     private String storeName;
 
-    public Vendor() {
+    public VendorDTO() {
         super();
-        // Set default role for this type of user
-        this.setRole(Role.VENDOR);
     }
 
-    // Standard getters and setters for database mapping
     public String getVatNumber() { return vatNumber; }
     public void setVatNumber(String vatNumber) { this.vatNumber = vatNumber; }
+
     public String getStoreName() { return storeName; }
     public void setStoreName(String storeName) { this.storeName = storeName; }
 }

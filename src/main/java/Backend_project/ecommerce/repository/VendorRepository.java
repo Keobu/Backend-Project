@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VendorRepositories extends JpaRepository<Vendor, Long> {
+public interface VendorRepository extends JpaRepository<Vendor, Long> {
+    // Custom query to find a vendor by their store name
     Optional<Vendor> findByStoreName(String storeName);
 }
