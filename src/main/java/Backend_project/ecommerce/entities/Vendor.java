@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Vendor extends User {
     private String vatNumber; // Partita IVA
+    private String storeName;
 
     public Vendor() {
         super();
