@@ -9,7 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
-@SuppressWarnings("unused") // This removes the "never used" yellow warnings for the whole class
+@SuppressWarnings("unused")
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)

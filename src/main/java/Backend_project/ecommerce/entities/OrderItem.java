@@ -18,7 +18,7 @@ public class OrderItem {
     private Product product;
 
     private Integer quantity;
-    private Double priceAtPurchase; // Importante: salva il prezzo al momento dell'acquisto!
+    private Double priceAtPurchase;
 
     public OrderItem() {}
 
