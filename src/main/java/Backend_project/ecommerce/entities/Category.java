@@ -1,7 +1,6 @@
 package Backend_project.ecommerce.entities;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -11,11 +10,11 @@ public class Category {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name; // Deve chiamarsi esattamente così
+    private String name;
 
     public Category() {}
 
-    // FONDAMENTALE: Getter e Setter manuali
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

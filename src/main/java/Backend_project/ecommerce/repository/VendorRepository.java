@@ -7,6 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, Long> {
-    // Custom query to find a vendor by their store name
+
     Optional<Vendor> findByStoreName(String storeName);
 }

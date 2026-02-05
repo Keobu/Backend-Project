@@ -20,5 +20,4 @@ public class OrderService {
         return orderRepository.findByCustomer(customer);
     }
 
-    // In the future, we will add a method here to transform a Cart into an Order
 }

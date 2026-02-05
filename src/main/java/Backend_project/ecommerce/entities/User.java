@@ -2,6 +2,7 @@ package Backend_project.ecommerce.entities;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED) // Crea tabelle separate ma collegate
@@ -22,6 +23,8 @@ public abstract class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String profileImage;
+
     public User() {}
 
     // Getter e Setter
@@ -37,4 +40,5 @@ public abstract class User {
     public void setLastName(String lastName) { this.lastName = lastName; }
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
+    public String getProfileImage() { return profileImage; }
 }

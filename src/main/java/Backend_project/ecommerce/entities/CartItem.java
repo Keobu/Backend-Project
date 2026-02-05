@@ -20,5 +20,5 @@ public class CartItem {
     private Integer quantity;
 
     public CartItem() {}
-    // Getter e Setter...
+
 }

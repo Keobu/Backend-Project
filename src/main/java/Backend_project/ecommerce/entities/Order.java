@@ -13,7 +13,7 @@ public class Order {
 
     private LocalDateTime orderDate;
     private Double totalAmount;
-    private String status; // Esempio: "PENDING", "SHIPPED", "DELIVERED"
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

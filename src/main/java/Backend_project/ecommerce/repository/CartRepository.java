@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    // Bean method per trovare il carrello associato a un cliente specifico
+
     Optional<Cart> findByCustomer(Customer customer);
 }

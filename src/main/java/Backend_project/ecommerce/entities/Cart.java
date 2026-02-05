@@ -17,5 +17,5 @@ public class Cart {
     private List<CartItem> items;
 
     public Cart() {}
-    // Getter e Setter...
+
 }

@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
-    // Bean method per recuperare tutti i prodotti dentro un determinato carrello
+
     List<CartItem> findByCart(Cart cart);
 }

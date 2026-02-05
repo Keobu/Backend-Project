@@ -8,6 +8,7 @@ public class Customer extends User {
 
     public Customer() {
         super();
+        this.setRole(Role.CUSTOMER);
     }
 
     public String getShippingAddress() { return shippingAddress; }

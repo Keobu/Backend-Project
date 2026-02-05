@@ -9,7 +9,6 @@ public class Vendor extends User {
 
     public Vendor() {
         super();
-        // Set default role for this type of user
         this.setRole(Role.VENDOR);
     }
 
