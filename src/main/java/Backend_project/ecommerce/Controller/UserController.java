@@ -1,23 +1,32 @@
 package Backend_project.ecommerce.Controller;
 
-import Backend_project.ecommerce.DTO.UserDTO;
+import Backend_project.ecommerce.entities.User;
 import Backend_project.ecommerce.service.UserService;
+import Backend_project.ecommerce.service.ImageUploadService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
+    private final ImageUploadService imageUploadService;
 
-    // Injecting the Service bean
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ImageUploadService imageUploadService) {
         this.userService = userService;
+        this.imageUploadService = imageUploadService;
     }
 
-    @GetMapping
-    public List<UserDTO> getAllUsers() {
-        return userService.findAllUsers();
+    @PatchMapping("/{id}/avatar")
+    public ResponseEntity<User> updateAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
+
+        String imageUrl = imageUploadService.uploadImage(file);
+
+        User updatedUser = userService.updateUserAvatar(id, imageUrl);
+
+        return ResponseEntity.ok(updatedUser);
     }
 }

@@ -1,11 +1,8 @@
 package Backend_project.ecommerce.service;
 
-import Backend_project.ecommerce.DTO.UserDTO;
 import Backend_project.ecommerce.entities.User;
 import Backend_project.ecommerce.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -16,19 +13,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserDTO> findAllUsers() {
-        return userRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
+    public User updateUserAvatar(Long id, String imageUrl) {
 
-    private UserDTO convertToDTO(User user) {
-        UserDTO dto = new UserDTO();
-        dto.setId(user.getId());
-        dto.setEmail(user.getEmail());
-        dto.setFirstName(user.getFirstName());
-        dto.setLastName(user.getLastName());
-        dto.setRole(user.getRole());
-        return dto;
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        user.setProfileImage(imageUrl);
+
+        return userRepository.save(user);
     }
 }
