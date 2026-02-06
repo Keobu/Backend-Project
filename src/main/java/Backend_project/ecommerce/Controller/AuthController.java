@@ -23,6 +23,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
+
     public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,
                           JwtService jwtService, AuthenticationManager authenticationManager,
                           EmailService emailService) {
@@ -35,22 +36,18 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Customer customer) {
-        if (userRepository.findByEmail(customer.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Error: Email is already in use!");
-        }
 
-        // Encrypt password and set default role
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customer.setRole(Role.CUSTOMER);
 
         userRepository.save(customer);
 
-        // Attempt to send welcome email
         try {
-            emailService.sendWelcomeEmail(customer.getEmail(), customer.getFirstName());
+            String subject = "Welcome to our Store!";
+            String body = "Hi " + customer.getFirstName() + ", thank you for joining us!";
+            emailService.sendEmail(customer.getEmail(), subject, body);
         } catch (Exception e) {
-
-            System.err.println("Failed to send welcome email: " + e.getMessage());
+            System.err.println("Async email task failed: " + e.getMessage());
         }
 
         return ResponseEntity.ok("User registered successfully!");
@@ -58,6 +55,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );

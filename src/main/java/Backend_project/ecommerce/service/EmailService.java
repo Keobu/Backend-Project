@@ -1,7 +1,8 @@
 package Backend_project.ecommerce.service;
 
-import kong.unirest.core.HttpResponse;
-import kong.unirest.core.Unirest;
+import com.resend.*;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.CreateEmailOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -9,31 +10,29 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     @Value("${resend.api.key}")
-    private String apiKey;
+    private String resendApiKey;
 
-    /**
-     * Sends a welcome email to a new user.
-     * @param toEmail The user's email address.
-     * @param firstName The user's first name.
-     */
-    public void sendWelcomeEmail(String toEmail, String firstName) {
+    public void sendEmail(String to, String subject, String content) {
 
-        String jsonBody = String.format(
-                "{\"from\": \"onboarding@resend.dev\", \"to\": [\"%s\"], \"subject\": \"Welcome to our Store!\", \"html\": \"<h1>Hi %s!</h1><p>Your account has been created successfully. Welcome to the family!</p>\"}",
-                toEmail, firstName
-        );
+        Resend resend = new Resend(resendApiKey);
 
-        HttpResponse<String> response = Unirest.post("https://api.resend.com/emails")
-                .header("Authorization", "Bearer " + apiKey)
-                .header("Content-Type", "application/json")
-                .body(jsonBody)
-                .asString();
+        CreateEmailOptions params = CreateEmailOptions.builder()
+                .from("onboarding@resend.dev")
+                .to(to)
+                .subject(subject)
+                .html("<strong>" + content + "</strong>")
+                .build();
 
-        if (response.isSuccess()) {
-            System.out.println("Email sent successfully to: " + toEmail);
-        } else {
-            System.err.println("Failed to send email. Status: " + response.getStatus());
-            System.err.println("Response Body: " + response.getBody());
+        try {
+
+            resend.emails().send(params);
+            System.out.println("Email sent successfully to: " + to);
+        } catch (ResendException e) {
+
+            System.err.println("Resend SDK error: " + e.getMessage());
+        } catch (Exception e) {
+
+            System.err.println("General email service error: " + e.getMessage());
         }
     }
 }

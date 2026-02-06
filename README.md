@@ -4,16 +4,14 @@ A robust Spring Boot backend for an E-commerce platform, featuring JWT security,
 
 ## 🚀 Features
 - **Security**: Stateless authentication using JWT.
-- **RBAC**: Three distinct roles: `ADMIN`, `VENDOR`, and `CUSTOMER`.
-- **User Management**: Registration, Login, and Avatar management via Cloudinary.
-- **Product & Inventory**: Category and Product management with role-restricted actions.
-- **Order System**: Cart management and order placement.
+- **User Management**: Registration (with Resend welcome email), Login, and Avatar management via Cloudinary.
+- **Product & Inventory**: Full CRUD operations for products (Create, Read, Delete).
 - **Third-Party Integrations**:
-    - **Cloudinary**: For professional image hosting.
-    - **Resend**: For automated welcome emails.
+    - **Cloudinary**: For professional image hosting and management.
+    - **Resend**: For automated welcome emails and manual notification tests.
 
 ## 🛠 Tech Stack
-- **Java 17** & **Spring Boot 3.x**
+- **Java 21** & **Spring Boot 4.x**
 - **PostgreSQL** (Database)
 - **Spring Security** (JWT)
 - **Maven** (Dependency management)
@@ -40,4 +38,9 @@ To run this project, you will need to add the following environment variables to
 5. The API will be available at `http://localhost:8080`
 
 ## 📬 Postman Collection
-A complete Postman collection is included in the root folder as `ecommerce_collection.json`. It includes example payloads, headers, and authentication tokens for all endpoints.
+A complete Postman collection is included to test all endpoints (Auth, User, Product, Other).
+- **File Location**: `./Ecommerce-Project.postman_collection.json`
+- **How to use**:
+    1. Import the JSON file into Postman.
+    2. Run the `Login` request to receive a JWT.
+    3. The collection is configured to use **Bearer Token** for protected routes.

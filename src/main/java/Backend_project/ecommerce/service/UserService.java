@@ -2,7 +2,9 @@ package Backend_project.ecommerce.service;
 
 import Backend_project.ecommerce.entities.User;
 import Backend_project.ecommerce.repository.UserRepository;
+import Backend_project.ecommerce.Exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -13,13 +15,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User updateUserAvatar(Long id, String imageUrl) {
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+    }
 
+
+    @Transactional
+    public void updateProfileImage(String email, String imageUrl) {
+        User user = findByEmail(email);
         user.setProfileImage(imageUrl);
-
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 }

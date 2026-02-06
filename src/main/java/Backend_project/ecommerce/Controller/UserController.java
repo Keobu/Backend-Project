@@ -1,32 +1,53 @@
 package Backend_project.ecommerce.Controller;
 
-import Backend_project.ecommerce.entities.User;
-import Backend_project.ecommerce.service.UserService;
 import Backend_project.ecommerce.service.ImageUploadService;
+import Backend_project.ecommerce.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
     private final ImageUploadService imageUploadService;
+    private final UserService userService;
 
-    public UserController(UserService userService, ImageUploadService imageUploadService) {
-        this.userService = userService;
+    public UserController(ImageUploadService imageUploadService, UserService userService) {
         this.imageUploadService = imageUploadService;
+        this.userService = userService;
     }
 
-    @PatchMapping("/{id}/avatar")
-    public ResponseEntity<User> updateAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping("/upload-profile-image")
+    public ResponseEntity<?> uploadProfileImage(@RequestParam("file") MultipartFile file) {
+        try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        String imageUrl = imageUploadService.uploadImage(file);
+            Object result = imageUploadService.uploadImage(file);
+            String imageUrl;
 
-        User updatedUser = userService.updateUserAvatar(id, imageUrl);
+            if (result instanceof Map) {
+                imageUrl = ((Map<?, ?>) result).get("url").toString();
+            } else if (result instanceof String) {
+                imageUrl = (String) result;
+            } else {
+                return ResponseEntity.badRequest().body("Unsupported upload response format");
+            }
 
-        return ResponseEntity.ok(updatedUser);
+            userService.updateProfileImage(email, imageUrl);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Profile image updated successfully");
+            response.put("url", imageUrl);
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Upload failed: " + e.getMessage());
+        }
     }
 }
